@@ -11,10 +11,12 @@ return {
         formatters = {
             ["clang-format"] = {
                 condition = function(_, ctx)
-                    local util = require("conform.util")
-                    local root = util.root.get(ctx.buf)
-                    return vim.uv.fs_stat(root .. "/.clang-format") ~= nil
+                    return vim.fs.find({ ".clang-format" }, { path = ctx.filename, upward = true })
+                    -- local util = require("conform.util")
+                    -- local root = util.root.get(ctx.buf)
+                    -- return vim.uv.fs_stat(root .. "/.clang-format") ~= nil
                 end,
+                prepend_args = { "--style=file", "--fallback-style=LLVM" },
             },
         },
     },
